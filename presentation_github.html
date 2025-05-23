@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Git & GitHub Professional Workshop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #24292e 0%, #0366d6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="60" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        .overview-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .overview-item:hover {
+            transform: translateY(-5px);
+            border-color: #0366d6;
+            box-shadow: 0 10px 25px rgba(3,102,214,0.15);
+        }
+        .overview-item strong {
+            color: #24292e;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        .content {
+            padding: 40px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+        .section h1 {
+            font-size: 2.5em;
+            color: #24292e;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #0366d6;
+            position: relative;
+        }
+        .section h1::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #0366d6, #667eea);
+        }
+        .section h2 {
+            font-size: 1.8em;
+            color: #0366d6;
+            margin: 30px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h3 {
+            font-size: 1.4em;
+            color: #586069;
+            margin: 25px 0 15px 0;
+            background: linear-gradient(90deg, #f6f8fa, transparent);
+            padding: 15px 20px;
+            border-left: 4px solid #0366d6;
+            border-radius: 0 8px 8px 0;
+        }
+        .activity-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+        .activity-box h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        .code-block .comment {
+            color: #6a9955;
+        }
+        .code-block .keyword {
+            color: #569cd6;
+        }
+        .code-block .string {
+            color: #ce9178;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #0366d6, #0256d0);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .comparison-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f6f8fa;
+        }
+        .comparison-table tr:hover {
+            background: #e6f3ff;
+        }
+        .checklist {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .checklist h4 {
+            color: #24292e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .checklist ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            margin: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #b52d3c;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .success-box {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .exercise-steps {
+            background: white;
+            border: 2px solid #0366d6;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .exercise-steps h4 {
+            color: #0366d6;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 15px 20px;
+            background: #f6f8fa;
+            border-left: 4px solid #0366d6;
+            border-radius: 0 5px 5px 0;
+        }
+        .step strong {
+            color: #24292e;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .git-workflow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f6f8fa 0%, #e1e4e8 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .workflow-step {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 150px;
+            border: 2px solid #0366d6;
+        }
+        .workflow-arrow {
+            font-size: 2em;
+            color: #0366d6;
+            font-weight: bold;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .resource-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e1e4e8;
+            transition: all 0.3s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .resource-card h4 {
+            color: #0366d6;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .scenario-box {
+            background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(253, 126, 20, 0.3);
+        }
+        .scenario-box h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        .competency-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .competency-card {
+            padding: 25px;
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .beginner { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+        .intermediate { background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); }
+        .advanced { background: linear-gradient(135deg, #dc3545 0%, #6f42c1 100%); }
+        .footer {
+            background: #24292e;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .footer-note {
+            font-size: 1.1em;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .header .subtitle { font-size: 1.1em; }
+            .overview-grid { padding: 20px; }
+            .content { padding: 20px; }
+            .git-workflow { flex-direction: column; }
+            .workflow-arrow { display: none; }
+        }
+        .toc {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .toc h3 {
+            color: #24292e;
+            margin-bottom: 20px;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 8px 0;
+            padding: 8px 15px;
+            border-left: 3px solid #0366d6;
+            background: white;
+            border-radius: 0 5px 5px 0;
+        }
+        .toc a {
+            color: #0366d6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Git & GitHub Professional Workshop</h1>
+            <p class="subtitle">From Beginner to Advanced - Interactive Workshop Notes</p>
+        </div>
+        <div class="overview-grid">
+            <div class="overview-item">
+                <strong>Duration:</strong> 6-8 hours (full day or split into 2 sessions)
+            </div>
+            <div class="overview-item">
+                <strong>Audience:</strong> Professionals, developers, project managers, technical teams
+            </div>
+            <div class="overview-item">
+                <strong>Format:</strong> Hands-on workshop with real-world scenarios
+            </div>
+            <div class="overview-item">
+                <strong>Takeaway:</strong> Participants leave with Git/GitHub skills ready for immediate workplace use
+            </div>
+        </div>
+        <div class="toc">
+            <h3>Workshop Sections</h3>
+            <ul>
+                <li><a href="#section1">Why Git Matters in Your Work</a></li>
+                <li><a href="#section2">Foundations & Setup</a></li>
+                <li><a href="#section3">Core Workflow - Individual Work</a></li>
+                <li><a href="#section4">Team Collaboration Essentials</a></li>
+                <li><a href="#section5">Professional Branching Strategies</a></li>
+                <li><a href="#section6">Advanced Workflows & Strategies</a></li>
+                <li><a href="#section7">Organizational Implementation</a></li>
+                <li><a href="#section8">Troubleshooting & Real-World Scenarios</a></li>
+            </ul>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="section" id="section5">
+            <h1>SECTION 5: PROFESSIONAL BRANCHING STRATEGIES</h1>
+            <h2>5.1 Git Flow vs GitHub Flow 🔄</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Git Flow</th>
+                        <th>GitHub Flow</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Long-lived branches (develop, master)</td>
+                        <td>Short-lived feature branches</td>
+                    </tr>
+                    <tr>
+                        <td>Release management focused</td>
+                        <td>Continuous deployment friendly</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Branching Exercise</h3>
+            <div class="exercise-steps">
+                <h4>Create Feature Branches:</h4>
+                <div class="code-block">
+<span class="keyword">git</span> checkout -b feature/new-ui
+<span class="keyword">git</span> push origin feature/new-ui
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="section" id="section6">
+            <h1>SECTION 6: ADVANCED WORKFLOWS & STRATEGIES</h1>
+            <h2>6.1 Rebase vs Merge 🔁</h2>
+            <div class="info-box">
+                <strong>Merge:</strong> Preserves history<br>
+                <strong>Rebase:</strong> Rewrites history
+            </div>
+            <h3>Interactive Rebase Demo</h3>
+            <div class="code-block">
+<span class="keyword">git</span> rebase -i HEAD~3
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="section" id="section7">
+            <h1>SECTION 7: ORGANIZATIONAL IMPLEMENTATION</h1>
+            <h2>7.1 Team Permissions & Roles</h2>
+            <div class="checklist">
+                <h4>Access Levels:</h4>
+                <ul>
+                    <li>Read</li>
+                    <li>Write</li>
+                    <li>Maintain</li>
+                    <li>Admin</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="section" id="section8">
+            <h1>SECTION 8: TROUBLESHOOTING & REAL-WORLD SCENARIOS</h1>
+            <h2>8.1 Recovering Lost Commits</h2>
+            <div class="code-block">
+<span class="keyword">git</span> reflog
+<span class="keyword">git</span> reset --hard HEAD@{1}
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p class="footer-note">Prepared by: Jelius G Heneriko</p>
+            <p class="footer-note">📞 Contacts: 0686971266</p>
+            <p class="footer-note">📧 Email: jeliusheneriko47@gmail.com</p>
+        </div>
+    </div>
+</body>
+</html>
